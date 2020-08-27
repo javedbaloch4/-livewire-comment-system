@@ -14,6 +14,7 @@ class Comments extends Component
     public $comments;
 
     public function mount() {
+
         $initialComments = Comment::latest()->get();
         $this->comments = $initialComments;
     }
@@ -21,9 +22,9 @@ class Comments extends Component
 
     public function addComment() {
       
-        if ($this->newComment == "") {
-            return;
-        }
+        $this->validate([
+            'newComment' => 'required|max:6'
+        ]);
 
         $createdComment = Comment::create([
             'body' => $this->newComment,
@@ -34,6 +35,13 @@ class Comments extends Component
 
         $this->newComment = "";
         
+    }
+
+    public function updated($field) {
+
+        $this->validateOnly($field, [
+            'newComment' => 'required|max:6'
+        ]);
     }
 
     public function render()
