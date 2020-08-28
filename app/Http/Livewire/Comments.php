@@ -23,7 +23,7 @@ class Comments extends Component
     public function addComment() {
       
         $this->validate([
-            'newComment' => 'required|max:6'
+            'newComment' => 'required|max:10'
         ]);
 
         $createdComment = Comment::create([
@@ -37,11 +37,18 @@ class Comments extends Component
         
     }
 
+    public function remove($id) {
+        // $this->comments = $this->comments->where('id', '!=', $id); // Comment Collection
+        $this->comments = $this->comments->except($id);
+        $comment = Comment::destroy($id);
+    }
+
     public function updated($field) {
 
         $this->validateOnly($field, [
-            'newComment' => 'required|max:6'
+            'newComment' => 'required|max:10'
         ]);
+    
     }
 
     public function render()
