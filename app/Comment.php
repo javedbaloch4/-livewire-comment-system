@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Storage;
 
 class Comment extends Model
 {
-    protected $fillable = ['body','user_id','image'];
+    protected $fillable = ['body','user_id','image','support_ticket_id'];
 
     public function user() {
         return $this->belongsTo(User::class);
