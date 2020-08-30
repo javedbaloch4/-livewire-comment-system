@@ -45,6 +45,9 @@
                     <p class="text-gray-800">
                         {{ $comment->body }}
                     </p>
+                    @if ($comment->image)
+                        <img src="{{ $comment->imagePath }}" alt="" width="100px">
+                    @endif
                 </div>
             @endforeach
 
@@ -65,6 +68,5 @@
         }
 
         reader.readAsDataURL(file);
-
     })
 </script>

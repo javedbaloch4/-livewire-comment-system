@@ -7,6 +7,9 @@ use Carbon\Carbon;
 use App\Comment;
 use Livewire\WithPagination;
 use Livewire\WithFileUploads;
+use Illuminate\Support\Facades\Storage;
+use Intervention\Image\ImageManagerStatic;
+use Illuminate\Support\Str; 
 
 class Comments extends Component
 {
@@ -22,8 +25,17 @@ class Comments extends Component
         $this->image = $imageData;
     }
 
-    public function mount() {
+    public function storeImage() {
+        if (!$this->image) {
+            return null;
+        }
 
+        $img = ImageManagerStatic::make($this->image)->encode('jpg');
+
+        $name = Str::random() . '.jpg';
+        Storage::disk('public')->put($name, $img);
+       
+        return $name;
     }
 
     public function addComment() {
@@ -32,18 +44,24 @@ class Comments extends Component
             'newComment' => 'required|max:10'
         ]);
 
+        $image = $this->storeImage();
+
         $createdComment = Comment::create([
-            'body' => $this->newComment,
+            'body' => $this->newComment, 
+            'image' => $image,
             'user_id' => 1
         ]);
 
         $this->newComment = "";
+        $this->image = "";
         session()->flash('message', 'Comment has been added.');
     }
 
     public function remove($id) {
         // $this->comments = $this->comments->where('id', '!=', $id); // Comment Collection
-        $comment = Comment::destroy($id);
+        $comment = Comment::find($id);
+        $comment->delete();
+        Storage::disk('public')->delete($comment->image);
         session()->flash('message','Comment has been deleted.');
 
     }
@@ -59,7 +77,7 @@ class Comments extends Component
     public function render()
     {
         return view('livewire.comments', [
-            'comments' => Comment::paginate(2)
+            'comments' => Comment::paginate(11)
         ]);
     }
 
