@@ -6,12 +6,21 @@ use Livewire\Component;
 use Carbon\Carbon;
 use App\Comment;
 use Livewire\WithPagination;
+use Livewire\WithFileUploads;
 
 class Comments extends Component
 {
     use WithPagination;
+    use WithFileUploads;
 
     public $newComment = '';
+    public $image;
+
+    protected $listeners = ['fileUpload' => 'handleFileUpload'];
+
+    public function handleFileUpload($imageData) {
+        $this->image = $imageData;
+    }
 
     public function mount() {
 
