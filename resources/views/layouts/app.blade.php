@@ -13,30 +13,17 @@
     <script src="{{ asset('js/app.js') }}"></script>  
 
 </head>
-<body class="flex justify-center">
 
-    <div class="flex w-full justify-center">
-        <a href="/">Home</a>
-        <a href="/login">Login</a>
+<body class="flex flex-wrap justify-center">
+
+    <div class="flex w-full justify-left px-4 bg-purple-900 text-white">
+        <a href="/" class="mx-3 py-4">Home</a>
+        <a href="/login" class="mx-3 py-4">Login</a>
     </div>
 
-    @yield('content')
-    
-    <div class="w-10/12 my-10 flex">
-
-        {{-- <div class="w-5/12 rounded border p-2">
-        
-            <livewire:tickets />
-
-        </div>
-
-        <div class="w-5/12 rounded border p-2">
-        
-            <livewire:comments />
-
-        </div> --}}
-
+    <div class="my-10 flex justify-center">
+        @yield('content')
     </div>
-
+        
 </body>
 </html>
